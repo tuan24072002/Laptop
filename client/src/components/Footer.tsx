@@ -46,8 +46,8 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li><a href="#" className="hover:text-blue-400 transition-colors">Laptop Gaming</a></li>
               <li><a href="#" className="hover:text-blue-400 transition-colors">MacBook</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Ultrabook</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Laptop Doanh nghiệp</a></li>
+              <li><a href="#" className="hover:text-blue-400 transition-colors">PC - Máy tính để bàn</a></li>
+              <li><a href="#" className="hover:text-blue-400 transition-colors">Laptop Văn Phòng</a></li>
               <li><a href="#" className="hover:text-blue-400 transition-colors">Phụ kiện</a></li>
             </ul>
           </div>

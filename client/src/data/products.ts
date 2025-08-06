@@ -168,8 +168,8 @@ export const categories = [
     count: products.filter((p) => p.category === "business").length,
   },
   {
-    id: "convertible",
-    name: "Laptop 2-in-1",
-    count: products.filter((p) => p.category === "convertible").length,
+    id: "pc",
+    name: "PC - Máy tính để bàn",
+    count: products.filter((p) => p.category === "pc").length,
   },
 ];

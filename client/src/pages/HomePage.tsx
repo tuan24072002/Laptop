@@ -128,8 +128,8 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
               <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
                 <Shield className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Bảo hành chính hãng</h3>
-              <p className="text-gray-600">Tất cả sản phẩm đều có bảo hành chính hãng từ nhà sản xuất.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Bảo hành 30 ngày</h3>
+              <p className="text-gray-600">Bảo hành 30 ngày đối với các lỗi liên quan tới phần cứng, hỗ trợ phần mềm 90 ngày.</p>
             </div>
 
             <div className="text-center group">
