@@ -7,6 +7,7 @@ import hp from "./HP.webp";
 import lenovo from "./Lenovo.webp";
 import macbook from "./macbook.webp";
 import msi from "./MSI.webp";
+import zalo from "./zalo.png";
 export const assets = {
   upload_area,
   profile_icon,
@@ -17,4 +18,5 @@ export const assets = {
   lenovo,
   macbook,
   msi,
+  zalo,
 };
