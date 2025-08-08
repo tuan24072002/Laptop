@@ -1,6 +1,14 @@
-import React from 'react';
-import { Laptop, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import {
+  Laptop,
+  Phone,
+  Mail,
+  Facebook,
+  Twitter,
+  Instagram,
+  Youtube,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
@@ -20,8 +28,8 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <p className="text-sm leading-relaxed">
-              Chuyên cung cấp laptop chính hãng với giá tốt nhất thị trường.
-              Cam kết chất lượng và dịch vụ hậu mại tận tâm.
+              Chuyên cung cấp laptop chính hãng với giá tốt nhất thị trường. Cam
+              kết chất lượng và dịch vụ hậu mại tận tâm.
             </p>
             <div className="flex space-x-4">
               <Facebook className="h-5 w-5 text-gray-400 hover:text-blue-500 cursor-pointer transition-colors" />
@@ -35,8 +43,18 @@ const Footer: React.FC = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-white">Liên kết nhanh</h4>
             <ul className="space-y-2">
-              <li className="hover:text-blue-400 transition-colors cursor-pointer" onClick={() => navigate('/products')}>Sản phẩm</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer" onClick={() => navigate('/contact')}>Liên hệ</li>
+              <li
+                className="hover:text-blue-400 transition-colors cursor-pointer"
+                onClick={() => navigate("/products")}
+              >
+                Sản phẩm
+              </li>
+              <li
+                className="hover:text-blue-400 transition-colors cursor-pointer"
+                onClick={() => navigate("/contact")}
+              >
+                Liên hệ
+              </li>
             </ul>
           </div>
 
@@ -44,11 +62,31 @@ const Footer: React.FC = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-white">Danh mục</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Laptop Gaming</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">MacBook</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">PC - Máy tính để bàn</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Laptop Văn Phòng</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Phụ kiện</a></li>
+              <li>
+                <a href="#" className="hover:text-blue-400 transition-colors">
+                  Laptop Gaming
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400 transition-colors">
+                  MacBook
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400 transition-colors">
+                  PC - Máy tính để bàn
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400 transition-colors">
+                  Laptop Văn Phòng
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400 transition-colors">
+                  Phụ kiện
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -70,19 +108,13 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <div className="bg-gray-800 p-4 rounded-lg">
-              <p className="text-sm font-medium text-white mb-2">Giờ làm việc:</p>
+              <p className="text-sm font-medium text-white mb-2">
+                Giờ làm việc:
+              </p>
               <p className="text-xs text-gray-400">T2-T6: 8:00 - 20:00</p>
               <p className="text-xs text-gray-400">T7-CN: 8:00 - 18:00</p>
             </div>
           </div>
-        </div>
-
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-sm text-gray-400">
-            © 2025 Laptop93. Created by: Tran Le Anh Tuan. |
-            <a href="#" className="hover:text-blue-400 transition-colors"> Chính sách bảo mật</a> |
-            <a href="#" className="hover:text-blue-400 transition-colors"> Điều khoản sử dụng</a>
-          </p>
         </div>
       </div>
     </footer>

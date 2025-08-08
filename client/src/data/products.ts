@@ -144,32 +144,33 @@ export const products: Product[] = [
     reviewCount: 67,
   },
 ];
-
-export const categories = [
-  { id: "all", name: "Tất cả", count: products.length },
+export const categories = (ProductList: Product[])=>{
+  return[
+  { id: "all", name: "Tất cả", count: ProductList.length },
   {
     id: "macbook",
     name: "MacBook",
-    count: products.filter((p) => p.category === "macbook").length,
+    count: ProductList.filter((p) => p.category === "macbook").length,
   },
   {
     id: "gaming",
     name: "Gaming",
-    count: products.filter((p) => p.category === "gaming").length,
+    count: ProductList.filter((p) => p.category === "gaming").length,
   },
   {
     id: "ultrabook",
     name: "Ultrabook",
-    count: products.filter((p) => p.category === "ultrabook").length,
+    count: ProductList.filter((p) => p.category === "ultrabook").length,
   },
   {
     id: "business",
     name: "Văn phòng",
-    count: products.filter((p) => p.category === "business").length,
+    count: ProductList.filter((p) => p.category === "business").length,
   },
   {
     id: "pc",
     name: "PC - Máy tính để bàn",
-    count: products.filter((p) => p.category === "pc").length,
+    count: ProductList.filter((p) => p.category === "pc").length,
   },
-];
+]
+};

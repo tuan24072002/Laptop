@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
-import { ChevronRight, Star, Truck, Shield, RotateCcw, Phone } from 'lucide-react';
-import ProductCard from '../components/ProductCard';
-import { Product } from '../types/Product';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { fetchAll } from '@/slice/product/Product.slice';
-import TrustedBrand from '@/components/TrustedBrand';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import {
+  ChevronRight,
+  Star,
+  Truck,
+  Shield,
+  RotateCcw,
+  Phone,
+} from "lucide-react";
+import ProductCard from "../components/ProductCard";
+import { Product } from "../types/Product";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { fetchAll } from "@/slice/product/Product.slice";
+import TrustedBrand from "@/components/TrustedBrand";
+import { useNavigate } from "react-router-dom";
 
 interface HomePageProps {
   onProductView: (product: Product) => void;
@@ -14,13 +21,12 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const productState = useAppSelector(state => state.product);
+  const productState = useAppSelector((state) => state.product);
   useEffect(() => {
     dispatch(fetchAll());
-  }, [dispatch])
+  }, [dispatch]);
   return (
     <div className="min-h-screen bg-gray-50">
-
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-purple-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -31,18 +37,20 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
                 <span className="block text-yellow-400">Giá Tốt Nhất</span>
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed">
-                Thu mua laptop nhanh chóng, giá cao – kiểm tra tận nơi, thanh toán liền tay. Hỗ trợ mọi dòng máy, đảm bảo minh bạch, uy tín tuyệt đối.
+                Thu mua laptop nhanh chóng, giá cao – kiểm tra tận nơi, thanh
+                toán liền tay. Hỗ trợ mọi dòng máy, đảm bảo minh bạch, uy tín
+                tuyệt đối.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={() => navigate('/products')}
+                  onClick={() => navigate("/products")}
                   className="bg-yellow-500 text-gray-900 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <span>Xem sản phẩm</span>
                   <ChevronRight className="h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => navigate('/contact')}
+                  onClick={() => navigate("/contact")}
                   className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Phone className="h-5 w-5" />
@@ -57,7 +65,9 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-white text-gray-900 p-4 rounded-xl shadow-lg">
-                <p className="text-2xl font-bold text-blue-600 text-center">36+</p>
+                <p className="text-2xl font-bold text-blue-600 text-center">
+                  36+
+                </p>
                 <p className="text-sm">Khách hàng hài lòng</p>
               </div>
             </div>
@@ -67,7 +77,6 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
       <div className="h-20 flex items-center justify-center bg-white">
         <TrustedBrand />
       </div>
-
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
@@ -82,8 +91,12 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {
-              productState.list.filter(p => p.inStock && p.featured).slice(0, 3)?.length > 0 && productState.list.filter(p => p.inStock && p.featured).slice(0, 3)
+            {productState.list
+              .filter((p) => p.inStock && p.featured)
+              .slice(0, 3)?.length > 0 &&
+              productState.list
+                .filter((p) => p.inStock && p.featured)
+                .slice(0, 3)
                 .map((product) => (
                   <ProductCard
                     key={product.id}
@@ -95,7 +108,7 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
 
           <div className="text-center">
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate("/products")}
               className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
             >
               Xem tất cả sản phẩm
@@ -120,24 +133,37 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
                 <Truck className="h-8 w-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Giao hàng nhanh</h3>
-              <p className="text-gray-600">Miễn phí vận chuyển toàn quốc. Giao hàng trong 24h tại TP.HCM và Hà Nội.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Giao hàng nhanh
+              </h3>
+              <p className="text-gray-600">
+                Miễn phí vận chuyển toàn quốc. Giao hàng trong 24h tại TP.HCM.
+              </p>
             </div>
 
             <div className="text-center group">
               <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
                 <Shield className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Bảo hành 30 ngày</h3>
-              <p className="text-gray-600">Bảo hành 30 ngày đối với các lỗi liên quan tới phần cứng, hỗ trợ phần mềm 90 ngày.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Bảo hành 30 ngày
+              </h3>
+              <p className="text-gray-600">
+                Bảo hành 30 ngày đối với các lỗi liên quan tới phần cứng.
+              </p>
             </div>
 
             <div className="text-center group">
               <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
                 <RotateCcw className="h-8 w-8 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Đổi trả dễ dàng</h3>
-              <p className="text-gray-600">Chính sách đổi trả linh hoạt trong vòng 7 ngày nếu không hài lòng.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Đổi trả dễ dàng
+              </h3>
+              <p className="text-gray-600">
+                Chính sách đổi trả linh hoạt trong vòng 7 ngày nếu không hài
+                lòng.
+              </p>
             </div>
           </div>
         </div>
@@ -179,7 +205,10 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
             <div className="bg-gray-50 p-6 rounded-xl">
               <div className="flex mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">
@@ -200,12 +229,15 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
             <div className="bg-gray-50 p-6 rounded-xl">
               <div className="flex mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">
-                "Mua laptop gaming ở đây, cấu hình mạnh, chơi game mượt mà.
-                Dịch vụ hậu mãi chu đáo, rất hài lòng."
+                "Mua laptop gaming ở đây, cấu hình mạnh, chơi game mượt mà. Dịch
+                vụ hậu mãi chu đáo, rất hài lòng."
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
@@ -221,7 +253,10 @@ const HomePage: React.FC<HomePageProps> = ({ onProductView }) => {
             <div className="bg-gray-50 p-6 rounded-xl">
               <div className="flex mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">

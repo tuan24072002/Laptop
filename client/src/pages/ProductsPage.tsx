@@ -1,12 +1,12 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Filter, Grid3X3, List, Loader2 } from 'lucide-react';
-import { categories } from '../data/products';
-import ProductCard from '../components/ProductCard';
-import { Product } from '../types/Product';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useAppContext } from '@/context/AppContext';
-import { fetchAllPagination } from '@/slice/product/Product.slice';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React, { useState, useMemo, useEffect } from "react";
+import { Search, Filter, Grid3X3, List, Loader2 } from "lucide-react";
+import { categories } from "../data/products";
+import ProductCard from "../components/ProductCard";
+import { Product } from "../types/Product";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useAppContext } from "@/context/AppContext";
+import { fetchAllPagination } from "@/slice/product/Product.slice";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface ProductsPageProps {
   onProductView: (product: Product) => void;
@@ -14,20 +14,24 @@ interface ProductsPageProps {
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
   const dispatch = useAppDispatch();
-  const productState = useAppSelector(state => state.product);
+  const productState = useAppSelector((state) => state.product);
   const { search, setSearch } = useAppContext();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 100000000 });
-  const [sortBy, setSortBy] = useState('name');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState("name");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredAndSortedProducts = useMemo(() => {
-    const filtered = productState.listPagination.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase()) ||
+    const filtered = productState.listPagination.filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(search.toLowerCase()) ||
         product.brand.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-      const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
+      const matchesCategory =
+        selectedCategory === "all" || product.category === selectedCategory;
+
+      const matchesPrice =
+        product.price >= priceRange.min && product.price <= priceRange.max;
 
       return matchesSearch && matchesCategory && matchesPrice;
     });
@@ -35,35 +39,46 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
     // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'price-low':
+        case "price-low":
           return a.price - b.price;
-        case 'price-high':
+        case "price-high":
           return b.price - a.price;
-        case 'rating':
+        case "rating":
           return b.rating - a.rating;
-        case 'name':
+        case "name":
         default:
           return a.name.localeCompare(b.name);
       }
     });
 
     return filtered;
-  }, [productState.listPagination, search, selectedCategory, priceRange.min, priceRange.max, sortBy]);
+  }, [
+    productState.listPagination,
+    search,
+    selectedCategory,
+    priceRange.min,
+    priceRange.max,
+    sortBy,
+  ]);
   const loadMore = () => {
     setTimeout(() => {
-      dispatch(fetchAllPagination({ page: productState.page + 1 }))
+      dispatch(fetchAllPagination({ page: productState.page + 1 }));
     }, 500);
-  }
+  };
   useEffect(() => {
     dispatch(fetchAllPagination());
-  }, [dispatch])
+  }, [dispatch]);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sản phẩm laptop</h1>
-          <p className="text-gray-600">Khám phá bộ sưu tập laptop đa dạng từ các thương hiệu hàng đầu</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Sản phẩm laptop
+          </h1>
+          <p className="text-gray-600">
+            Khám phá bộ sưu tập laptop đa dạng từ các thương hiệu hàng đầu
+          </p>
         </div>
 
         {/* Search and Controls */}
@@ -96,14 +111,22 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
             {/* View Mode */}
             <div className="flex border border-gray-300 rounded-lg overflow-hidden">
               <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600'}`}
+                onClick={() => setViewMode("grid")}
+                className={`p-2 ${
+                  viewMode === "grid"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
               >
                 <Grid3X3 className="h-5 w-5" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600'}`}
+                onClick={() => setViewMode("list")}
+                className={`p-2 ${
+                  viewMode === "list"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
               >
                 <List className="h-5 w-5" />
               </button>
@@ -127,21 +150,32 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
                 <div>
                   <h3 className="font-medium text-gray-900 mb-3">Danh mục</h3>
                   <div className="space-y-2">
-                    {categories.map((category) => (
-                      <label key={category.id} className="flex items-center">
-                        <input
-                          type="radio"
-                          name="category"
-                          value={category.id}
-                          checked={selectedCategory === category.id}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
-                          className="text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                          {category.name} ({category.count})
-                        </span>
-                      </label>
-                    ))}
+                    {categories(productState.listPagination).map((category) => {
+                      if (category.count > 0) {
+                        return (
+                          <label
+                            key={category.id}
+                            className="flex items-center"
+                          >
+                            <input
+                              type="radio"
+                              name="category"
+                              value={category.id}
+                              checked={selectedCategory === category.id}
+                              onChange={(e) =>
+                                setSelectedCategory(e.target.value)
+                              }
+                              className="text-blue-600 focus:ring-blue-500"
+                            />
+                            <span className="ml-2 text-sm text-gray-600">
+                              {category.name} ({category.count})
+                            </span>
+                          </label>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
                   </div>
                 </div>
 
@@ -150,21 +184,35 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
                   <h3 className="font-medium text-gray-900 mb-3">Khoảng giá</h3>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Từ</label>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Từ
+                      </label>
                       <input
                         type="number"
                         value={priceRange.min}
-                        onChange={(e) => setPriceRange(prev => ({ ...prev, min: Number(e.target.value) }))}
+                        onChange={(e) =>
+                          setPriceRange((prev) => ({
+                            ...prev,
+                            min: Number(e.target.value),
+                          }))
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                         placeholder="0"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Đến</label>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Đến
+                      </label>
                       <input
                         type="number"
                         value={priceRange.max}
-                        onChange={(e) => setPriceRange(prev => ({ ...prev, max: Number(e.target.value) }))}
+                        onChange={(e) =>
+                          setPriceRange((prev) => ({
+                            ...prev,
+                            max: Number(e.target.value),
+                          }))
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                         placeholder="100000000"
                       />
@@ -174,18 +222,22 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
 
                 {/* Quick Price Filters */}
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-3">Mức giá phổ biến</h3>
+                  <h3 className="font-medium text-gray-900 mb-3">
+                    Mức giá phổ biến
+                  </h3>
                   <div className="space-y-2">
                     {[
-                      { label: 'Dưới 20 triệu', min: 0, max: 20000000 },
-                      { label: '20 - 30 triệu', min: 20000000, max: 30000000 },
-                      { label: '30 - 50 triệu', min: 30000000, max: 50000000 },
-                      { label: 'Trên 50 triệu', min: 50000000, max: 100000000 },
-                      { label: 'Tất cả', min: 0, max: 1000000000 },
+                      { label: "Dưới 20 triệu", min: 0, max: 20000000 },
+                      { label: "20 - 30 triệu", min: 20000000, max: 30000000 },
+                      { label: "30 - 50 triệu", min: 30000000, max: 50000000 },
+                      { label: "Trên 50 triệu", min: 50000000, max: 100000000 },
+                      { label: "Tất cả", min: 0, max: 1000000000 },
                     ].map((range) => (
                       <button
                         key={range.label}
-                        onClick={() => setPriceRange({ min: range.min, max: range.max })}
+                        onClick={() =>
+                          setPriceRange({ min: range.min, max: range.max })
+                        }
                         className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
                       >
                         {range.label}
@@ -201,18 +253,22 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Hiển thị {filteredAndSortedProducts.length} trong số {productState.total} sản phẩm
+            Hiển thị {filteredAndSortedProducts.length} trong số{" "}
+            {productState.total} sản phẩm
           </p>
         </div>
 
         {/* Products Grid/List */}
-        {productState.statusPagination === 'completed' && filteredAndSortedProducts.length === 0 ? (
+        {productState.statusPagination === "completed" &&
+        filteredAndSortedProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">Không tìm thấy sản phẩm nào phù hợp</p>
+            <p className="text-gray-500 text-lg">
+              Không tìm thấy sản phẩm nào phù hợp
+            </p>
             <button
               onClick={() => {
-                setSearch('');
-                setSelectedCategory('all');
+                setSearch("");
+                setSelectedCategory("all");
                 setPriceRange({ min: 0, max: 100000000 });
               }}
               className="mt-4 text-blue-600 hover:text-blue-800"
@@ -230,10 +286,11 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
             }
             dataLength={productState.filtered.length}
             next={loadMore}
-            className={`grid gap-6 ${viewMode === 'grid'
-              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-              : 'grid-cols-1'
-              }`}
+            className={`grid gap-6 ${
+              viewMode === "grid"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "grid-cols-1"
+            }`}
           >
             {filteredAndSortedProducts.map((product) => (
               <ProductCard
