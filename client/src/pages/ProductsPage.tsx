@@ -63,11 +63,12 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
   const loadMore = () => {
     setTimeout(() => {
       dispatch(fetchAllPagination({ page: productState.page + 1 }));
-    }, 500);
+    }, 5000);
   };
   useEffect(() => {
     dispatch(fetchAllPagination());
   }, [dispatch]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -284,7 +285,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
                 <Loader2 className="animate-spin" />
               </div>
             }
-            dataLength={productState.filtered.length}
+            dataLength={productState.listPagination.length}
             next={loadMore}
             className={`grid gap-6 ${
               viewMode === "grid"
@@ -294,7 +295,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onProductView }) => {
           >
             {filteredAndSortedProducts.map((product) => (
               <ProductCard
-                key={product.id}
+                key={`product-page-${product.id}`}
                 product={product}
                 onViewDetails={onProductView}
               />

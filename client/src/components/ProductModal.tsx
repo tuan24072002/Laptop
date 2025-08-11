@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { X, Star, ShoppingCart, Truck, Shield, RotateCcw } from 'lucide-react';
-import { Product } from '../types/Product';
-import { useCart } from '../context/CartContext';
+import React, { useEffect, useState } from "react";
+import { X, Star, ShoppingCart, Truck, Shield, RotateCcw } from "lucide-react";
+import { Product } from "../types/Product";
+import { useCart } from "../context/CartContext";
 import { useClickAway } from "@uidotdev/usehooks";
+import ImageView from "./ImageView";
 
 interface ProductModalProps {
   product: Product | null;
@@ -10,39 +11,51 @@ interface ProductModalProps {
   onClose: () => void;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose }) => {
+const ProductModal: React.FC<ProductModalProps> = ({
+  product,
+  isOpen,
+  onClose,
+}) => {
   const { dispatch } = useCart();
   const ref = useClickAway<HTMLDivElement>(() => {
     onClose();
   });
+  const [imgView, setImgView] = useState("");
   const [thumbnail, setThumbnail] = useState(product?.image?.[0]);
   useEffect(() => {
     if (product) {
       setThumbnail(product.image[0]);
     }
-  }, [product])
+  }, [product]);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(price);
   };
   if (!isOpen || !product) return null;
   const handleAddToCart = () => {
-    dispatch({ type: 'ADD_ITEM', payload: product });
+    dispatch({ type: "ADD_ITEM", payload: product });
   };
 
   const discountPercent = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    ? Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )
     : 0;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div ref={ref} className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden overflow-y-auto hidden-scrollbar">
+      <div
+        ref={ref}
+        className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden overflow-y-auto hidden-scrollbar"
+      >
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white z-10">
-          <h2 className="text-2xl font-bold text-gray-900">Chi tiết sản phẩm</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Chi tiết sản phẩm
+          </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -56,19 +69,36 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
             {/* Product Image */}
             <div className="relative">
               <div className="flex gap-3">
-                <div className="flex flex-col gap-3 h-[265px] overflow-x-hidden overflow-y-auto hidden-scrollbar">
+                <div className="flex flex-col gap-3 h-[265px] overflow-x-hidden overflow-y-auto">
                   {product.image.map((image, index) => (
-                    <div key={index} onClick={() => setThumbnail(image)} className="border max-w-24 min-h-14 border-gray-500/30 rounded overflow-hidden cursor-pointer" >
-                      <img src={import.meta.env.VITE_BACKEND_URL + image.slice(1)} alt={`Thumbnail ${index + 1}`} />
+                    <div
+                      key={index}
+                      onClick={() => setThumbnail(image)}
+                      className="border max-w-24 min-h-14 border-gray-500/30 rounded overflow-hidden cursor-pointer"
+                    >
+                      <img
+                        src={import.meta.env.VITE_BACKEND_URL + image.slice(1)}
+                        alt={`Thumbnail ${index + 1}`}
+                      />
                     </div>
                   ))}
                 </div>
 
-                <div className="border border-gray-500/30 max-w-100 rounded overflow-hidden flex-1">
-                  <img src={import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)} alt="Selected product" className="w-full h-full object-cover" />
+                <div
+                  className="border border-gray-500/30 max-w-100 max-h-72 rounded overflow-hidden flex-1 cursor-pointer"
+                  onClick={() =>
+                    setImgView(
+                      import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)
+                    )
+                  }
+                >
+                  <img
+                    src={import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)}
+                    alt="Selected product"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
-
 
               {/* Badges */}
               <div className="absolute top-4 right-4 flex flex-col space-y-2">
@@ -89,8 +119,12 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
             <div className="space-y-6">
               {/* Brand & Name */}
               <div>
-                <p className="text-lg text-blue-600 font-medium">{product.brand}</p>
-                <h3 className="text-2xl font-bold text-gray-900 mt-1">{product.name}</h3>
+                <p className="text-lg text-blue-600 font-medium">
+                  {product.brand}
+                </p>
+                <h3 className="text-2xl font-bold text-gray-900 mt-1">
+                  {product.name}
+                </h3>
               </div>
 
               {/* Rating */}
@@ -99,10 +133,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-5 w-5 ${i < Math.floor(product.rating)
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
-                        }`}
+                      className={`h-5 w-5 ${
+                        i < Math.floor(product.rating)
+                          ? "text-yellow-400 fill-current"
+                          : "text-gray-300"
+                      }`}
                     />
                   ))}
                 </div>
@@ -125,14 +160,17 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                 </div>
                 {discountPercent > 0 && (
                   <p className="text-sm text-green-600 mt-1">
-                    Tiết kiệm {formatPrice(product.originalPrice! - product.price)}
+                    Tiết kiệm{" "}
+                    {formatPrice(product.originalPrice! - product.price)}
                   </p>
                 )}
               </div>
 
               {/* Description */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Mô tả sản phẩm</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Mô tả sản phẩm
+                </h4>
                 <p className="text-gray-600">{product.description}</p>
               </div>
 
@@ -158,15 +196,19 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t">
                 <div className="flex flex-col justify-center items-center gap-2 text-gray-600">
                   <Truck className="size-5 text-green-600" />
-                  <span className='text-center text-xs'>Miễn phí vận chuyển</span>
+                  <span className="text-center text-xs">
+                    Miễn phí vận chuyển
+                  </span>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 text-gray-600">
                   <Shield className="size-5 text-blue-600" />
-                  <span className='text-center text-xs'>Bảo hành chính hãng</span>
+                  <span className="text-center text-xs">
+                    Bảo hành chính hãng
+                  </span>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 text-gray-600">
                   <RotateCcw className="size-5 text-purple-600" />
-                  <span className='text-center text-xs'>Đổi trả 7 ngày</span>
+                  <span className="text-center text-xs">Đổi trả 7 ngày</span>
                 </div>
               </div>
             </div>
@@ -174,14 +216,18 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 
           {/* Specifications */}
           <div className="mt-8 pt-8 border-t">
-            <h4 className="text-xl font-bold text-gray-900 mb-4">Thông số kỹ thuật</h4>
+            <h4 className="text-xl font-bold text-gray-900 mb-4">
+              Thông số kỹ thuật
+            </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h5 className="font-medium text-gray-900 mb-3">Hiệu năng</h5>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Bộ xử lý:</span>
-                    <span className="font-medium">{product.specs.processor}</span>
+                    <span className="font-medium">
+                      {product.specs.processor}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">RAM:</span>
@@ -193,13 +239,17 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Card đồ họa:</span>
-                    <span className="font-medium">{product.specs.graphics}</span>
+                    <span className="font-medium">
+                      {product.specs.graphics}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h5 className="font-medium text-gray-900 mb-3">Hiển thị & Pin</h5>
+                <h5 className="font-medium text-gray-900 mb-3">
+                  Hiển thị & Pin
+                </h5>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Màn hình:</span>
@@ -215,6 +265,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
           </div>
         </div>
       </div>
+      <ImageView
+        src={imgView}
+        alt="Random photo"
+        thumbnailClass="w-56 h-36 object-cover rounded-lg"
+      />
     </div>
   );
 };
