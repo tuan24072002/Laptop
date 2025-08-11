@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { X, Star, ShoppingCart, Truck, Shield, RotateCcw } from "lucide-react";
 import { Product } from "../types/Product";
 import { useCart } from "../context/CartContext";
-import { useClickAway } from "@uidotdev/usehooks";
 import ImageView from "./ImageView";
 
 interface ProductModalProps {
@@ -17,11 +16,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
 }) => {
   const { dispatch } = useCart();
-  const ref = useClickAway<HTMLDivElement>(() => {
-    onClose();
-  });
+  const [openImgView, setOpenImgView] = useState(false);
   const [imgView, setImgView] = useState("");
   const [thumbnail, setThumbnail] = useState(product?.image?.[0]);
+
+  const handleImageView = () => {
+    setImgView(import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1));
+    setOpenImgView(true);
+  };
+
   useEffect(() => {
     if (product) {
       setThumbnail(product.image[0]);
@@ -47,10 +50,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div
-        ref={ref}
-        className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden overflow-y-auto hidden-scrollbar"
-      >
+      <div className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden overflow-y-auto hidden-scrollbar">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white z-10">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -86,11 +86,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
                 <div
                   className="border border-gray-500/30 max-w-100 max-h-72 rounded overflow-hidden flex-1 cursor-pointer"
-                  onClick={() =>
-                    setImgView(
-                      import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)
-                    )
-                  }
+                  onClick={handleImageView}
                 >
                   <img
                     src={import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)}
@@ -267,8 +263,12 @@ const ProductModal: React.FC<ProductModalProps> = ({
       </div>
       <ImageView
         src={imgView}
-        alt="Random photo"
-        thumbnailClass="w-56 h-36 object-cover rounded-lg"
+        alt="View Photo"
+        open={openImgView}
+        isClose={() => {
+          setOpenImgView(false);
+          setImgView("");
+        }}
       />
     </div>
   );
