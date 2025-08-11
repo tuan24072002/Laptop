@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { X, Star, ShoppingCart, Truck, Shield, RotateCcw } from "lucide-react";
 import { Product } from "../types/Product";
 import { useCart } from "../context/CartContext";
-import ImageView from "./ImageView";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Lightbox from "yet-another-react-lightbox";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
+import Video from "yet-another-react-lightbox/plugins/video";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import { cn } from "@/lib/utils";
 
 interface ProductModalProps {
   product: Product | null;
@@ -16,31 +24,54 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
 }) => {
   const { dispatch } = useCart();
+  const images = product?.image ?? [];
+
   const [openImgView, setOpenImgView] = useState(false);
-  const [imgView, setImgView] = useState("");
-  const [thumbnail, setThumbnail] = useState(product?.image?.[0]);
+  const [thumbnail, setThumbnail] = useState<string | undefined>(images[0]);
+  const [index, setIndex] = useState<number>(0);
+
+  useEffect(() => {
+    setThumbnail(images[0]);
+    setIndex(0);
+  }, [product]);
+
+  const slides = useMemo(
+    () =>
+      images.map((item) => {
+        const src = import.meta.env.VITE_BACKEND_URL + item.slice(1);
+        return {
+          src,
+          thumbnail: src,
+          alt: "Product image",
+          width: 1400,
+          height: 900,
+        };
+      }),
+    [images]
+  );
 
   const handleImageView = () => {
-    setImgView(import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1));
+    const startIndex = images.findIndex((p) => p === thumbnail);
+    setIndex(startIndex >= 0 ? startIndex : 0);
     setOpenImgView(true);
   };
 
-  useEffect(() => {
-    if (product) {
-      setThumbnail(product.image[0]);
-    }
-  }, [product]);
+  const onClickThumb = (img: string, idx: number) => {
+    setThumbnail(img);
+    setIndex(idx);
+  };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("vi-VN", {
+  const handleAddToCart = () => {
+    if (product) dispatch({ type: "ADD_ITEM", payload: product });
+  };
+
+  if (!isOpen || !product) return null;
+
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(price);
-  };
-  if (!isOpen || !product) return null;
-  const handleAddToCart = () => {
-    dispatch({ type: "ADD_ITEM", payload: product });
-  };
 
   const discountPercent = product.originalPrice
     ? Math.round(
@@ -70,18 +101,25 @@ const ProductModal: React.FC<ProductModalProps> = ({
             <div className="relative">
               <div className="flex gap-3">
                 <div className="flex flex-col gap-3 h-[265px] overflow-x-hidden overflow-y-auto">
-                  {product.image.map((image, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setThumbnail(image)}
-                      className="border max-w-24 min-h-14 border-gray-500/30 rounded overflow-hidden cursor-pointer"
-                    >
-                      <img
-                        src={import.meta.env.VITE_BACKEND_URL + image.slice(1)}
-                        alt={`Thumbnail ${index + 1}`}
-                      />
-                    </div>
-                  ))}
+                  {images.map((image, idx) => {
+                    const src =
+                      import.meta.env.VITE_BACKEND_URL + image.slice(1);
+                    const active = image === thumbnail;
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => onClickThumb(image, idx)}
+                        className={cn(
+                          "border max-w-24 min-h-14 border-gray-500/30 rounded overflow-hidden cursor-pointer",
+                          active
+                            ? "border-blue-500 shadow-lg"
+                            : "border-gray-300"
+                        )}
+                      >
+                        <img src={src} alt={`Thumbnail ${idx + 1}`} />
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div
@@ -89,7 +127,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   onClick={handleImageView}
                 >
                   <img
-                    src={import.meta.env.VITE_BACKEND_URL + thumbnail?.slice(1)}
+                    src={
+                      import.meta.env.VITE_BACKEND_URL +
+                      (thumbnail?.slice(1) ?? images[0]?.slice(1) ?? "")
+                    }
                     alt="Selected product"
                     className="w-full h-full object-cover"
                   />
@@ -261,14 +302,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
           </div>
         </div>
       </div>
-      <ImageView
-        src={imgView}
-        alt="View Photo"
+
+      {/* Lightbox */}
+      <Lightbox
+        index={index}
         open={openImgView}
-        isClose={() => {
-          setOpenImgView(false);
-          setImgView("");
-        }}
+        close={() => setOpenImgView(false)}
+        slides={slides}
+        plugins={[Thumbnails, Fullscreen, Slideshow, Video, Zoom]}
+        thumbnails={{ position: "bottom" }}
       />
     </div>
   );
