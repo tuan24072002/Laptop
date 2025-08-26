@@ -78,7 +78,7 @@ const AddProductModal = ({ setIsOpen }: Props) => {
         featured: data.featured,
         rating: data.rating > 5 ? 5 : data.rating < 0 ? 0 : data.rating,
         reviewCount: data.reviewCount,
-        inStock: true,
+        inStock: productState.action === "INS" ? true : data.inStock,
       };
       const formData = new FormData();
       formData.append("productData", JSON.stringify(productData));
@@ -556,13 +556,32 @@ const AddProductModal = ({ setIsOpen }: Props) => {
                   Nổi bật
                 </label>
               </div>
-              <button
-                type="submit"
-                className="px-8 py-2.5 w-fit bg-primary hover:bg-primary-dull text-white font-medium rounded"
+              <label
+                className="relative inline-flex cursor-pointer items-center gap-3 text-base font-medium"
+                title={
+                  productState.action === "INS" ? "Mặc định là còn hàng" : ""
+                }
               >
-                {productState.action === "INS" ? "Thêm" : "Sửa"}
-              </button>
+                <input
+                  type="checkbox"
+                  className="peer sr-only"
+                  checked={formikProduct.values.inStock}
+                  onChange={(e) =>
+                    formikProduct.setFieldValue("inStock", e.target.checked)
+                  }
+                  disabled={productState.action === "INS"}
+                />
+                <div className="peer h-7 w-12 rounded-full bg-slate-300 ring-offset-1 transition-colors duration-200 peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary"></div>
+                <span className="dot absolute top-1 left-1 h-5 w-5 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
+                Còn hàng?
+              </label>
             </div>
+            <button
+              type="submit"
+              className="px-8 py-2.5 w-fit bg-primary hover:bg-primary-dull text-white font-medium rounded"
+            >
+              {productState.action === "INS" ? "Thêm" : "Sửa"}
+            </button>
           </div>
         </form>
       </div>

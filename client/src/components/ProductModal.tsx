@@ -123,7 +123,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 </div>
 
                 <div
-                  className="border border-gray-500/30 max-w-100 max-h-72 rounded overflow-hidden flex-1 cursor-pointer"
+                  className="border border-gray-500/30 max-w-100 max-h-72 rounded overflow-hidden flex-1 cursor-pointer relative"
                   onClick={handleImageView}
                 >
                   <img
@@ -132,18 +132,28 @@ const ProductModal: React.FC<ProductModalProps> = ({
                       (thumbnail?.slice(1) ?? images[0]?.slice(1) ?? "")
                     }
                     alt="Selected product"
-                    className="w-full h-full object-cover"
+                    className={cn(
+                      "w-full h-full object-cover",
+                      !product.inStock && "grayscale"
+                    )}
                   />
+                  {!product.inStock && (
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <h2 className="text-2xl font-bold uppercase bg-red-600 text-white p-1 rounded-md">
+                        Sold out
+                      </h2>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* Badges */}
               <div className="absolute top-4 right-4 flex flex-col space-y-2">
-                {!product.inStock && (
+                {/* {!product.inStock && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                     Hết hàng
                   </span>
-                )}
+                )} */}
                 {discountPercent > 0 && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                     -{discountPercent}%
@@ -221,12 +231,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   <span>Thêm vào giỏ hàng</span>
                 </button>
               ) : (
-                <button
-                  disabled
-                  className="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg cursor-not-allowed font-medium"
+                <a
+                  href="https://zalo.me/0777770941"
+                  target="_blank"
+                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
                 >
-                  Hết hàng
-                </button>
+                  Liên hệ ngay
+                </a>
               )}
 
               {/* Features */}

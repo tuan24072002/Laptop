@@ -73,7 +73,7 @@ class ProductModel {
         battery: "",
       },
       description: "",
-      inStock: false,
+      inStock: true,
       rating: 0,
       reviewCount: 0,
       featured: false,

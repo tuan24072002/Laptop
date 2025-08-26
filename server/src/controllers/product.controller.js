@@ -8,7 +8,7 @@ export const productList = async (req, res) => {
     const showAll = req.query.showAll ?? false;
     const skip = (page - 1) * limit;
     if (showAll) {
-      const products = await Product.find({ inStock: true }).sort({ name: 1 });
+      const products = await Product.find().sort({ name: 1 });
       return res.status(200).json({
         succes: true,
         data: { products },
@@ -16,7 +16,7 @@ export const productList = async (req, res) => {
     }
     const [products, total] = await Promise.all([
       Product.find({}).skip(skip).limit(limit).sort({ name: 1 }),
-      Product.countDocuments({ inStock: true }),
+      Product.countDocuments(),
     ]);
     res.status(200).json({
       succes: true,
